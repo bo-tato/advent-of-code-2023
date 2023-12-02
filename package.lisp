@@ -10,6 +10,7 @@
   (:import-from :alexandria
    :lastcar)
   (:import-from :ppcre
+   :scan-to-strings
    :all-matches-as-strings)
   (:import-from :fn
                 :fn~))
