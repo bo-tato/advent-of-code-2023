@@ -7,6 +7,7 @@
   (:import-from :serapeum
    :ensure
    :eqls
+   :summing
    :sum
    :~>>)
   (:import-from :alexandria
