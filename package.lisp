@@ -5,12 +5,17 @@
   (:import-from :uiop
    :read-file-lines)
   (:import-from :serapeum
+   :ensure
+   :eqls
    :sum
    :~>>)
   (:import-from :alexandria
+   :when-let
    :lastcar)
   (:import-from :ppcre
    :scan-to-strings
    :all-matches-as-strings)
   (:import-from :fn
-                :fn~))
+                :fn~)
+  (:import-from :array-operations/utilities
+                :multf))
