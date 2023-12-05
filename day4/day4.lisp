@@ -1,8 +1,5 @@
 (in-package :advent-of-code-2023)
 
-(defun string-to-num-list (string)
-  (mapcar #'parse-integer (str:words string)))
-
 (defun winning-count (card)
   (~>> (str:split ":" card)
        second
