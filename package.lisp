@@ -5,6 +5,7 @@
   (:import-from :uiop
    :read-file-lines)
   (:import-from :serapeum
+   :batches
    :ensure
    :eqls
    :summing
