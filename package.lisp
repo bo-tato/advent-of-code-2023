@@ -1,23 +1,10 @@
 ;;;; package.lisp
 
 (defpackage :advent-of-code-2023
-  (:use :cl)
+  (:use :cl :alexandria :serapeum)
   (:import-from :uiop
    :read-file-lines)
-  (:import-from :serapeum
-   :batches
-   :ensure
-   :eqls
-   :summing
-   :sum
-   :~>>)
-  (:import-from :alexandria
-   :when-let
-   :lastcar)
   (:import-from :ppcre
-   :scan-to-strings
-   :all-matches-as-strings)
-  (:import-from :fn
-                :fn~)
+   :scan-to-strings :all-matches-as-strings)
   (:import-from :array-operations/utilities
-                :multf))
+   :multf))
