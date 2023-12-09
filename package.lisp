@@ -11,7 +11,9 @@
   (:import-from :metabang-bind
    :bind)
   (:import-from :named-readtables
-                :in-readtable))
+   :in-readtable)
+  (:import-from :series
+   :collect-length :until-if :series :collecting-fn))
 
 (named-readtables:defreadtable
     :aoc-sugar

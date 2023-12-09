@@ -1,13 +1,18 @@
 (in-package :advent-of-code-2023)
 (in-readtable :aoc-sugar)
 
+;; alternative solution with the old-fashioned series library that allows
+;; operating on infinite sequences
+;; https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node347.html
 (defun find-path (moves nodes start end-pred)
-  (loop for position = start then (if (char= move #\L)
+  (1+ (collect-length
+       (until-if end-pred
+                 (collecting-fn 'string λstart
+                                (lambda (position move)
+                                  (if (char= move #\L)
                                       (car (@ nodes position))
-                                      (cdr (@ nodes position)))
-        for move in (apply #'circular-list (coerce moves 'list))
-        until (funcall end-pred position)
-        count t))
+                                      (cdr (@ nodes position))))
+                                (apply #'series (coerce moves 'list)))))))
 
 (bind (((moves node-lines) (str:split #?"\n\n" (str:from-file "input.txt")))
        (nodes (dict)))
