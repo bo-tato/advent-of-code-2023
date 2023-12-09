@@ -1,4 +1,5 @@
 (in-package :advent-of-code-2023)
+(in-readtable :aoc-sugar)
 
 ;; kind of messy write-only code for this day but I'm too lazy to clean it up
 
