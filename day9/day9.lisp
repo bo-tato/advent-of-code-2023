@@ -1,10 +1,15 @@
 (in-package :advent-of-code-2023)
 
-(defun next-value (history-line)
+(defun next-value (history-line part)
   (loop for nums = (string-to-num-list history-line)
           then (loop for (x y) on nums while y
                      collect (- y x))
         while (notevery #'zerop nums)
-        sum (lastcar nums)))
+        for sign = 1 then (- sign)
+        if (eq part :part1)
+          sum (lastcar nums)
+        else
+          sum (* sign (first nums))))
 
-(sum (mapcar #'next-value (read-file-lines "input.txt")))
+(loop for line in (read-file-lines "input.txt")
+      sum (next-value line :part2))
