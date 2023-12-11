@@ -1,6 +1,10 @@
 (in-package :advent-of-code-2023)
 (in-readtable :aoc-sugar)
 
+;; 2 for part1
+;; 1000000 for part2
+(defparameter *expansion-factor* (1- 1000000))
+
 (let* (rows
        cols
        (galaxies (loop for line in (read-file-lines "input.txt")
@@ -19,7 +23,8 @@
                         (when (> col1 col2) (rotatef col1 col2))
                         (sum (+ (- row2 row1)
                                 (- col2 col1)
-                                (count-if λ(< row1 _ row2) empty-rows)
-                                (count-if λ(< col1 _ col2) empty-cols))))
+                                (* *expansion-factor*
+                                   (+ (count-if λ(< row1 _ row2) empty-rows)
+                                      (count-if λ(< col1 _ col2) empty-cols))))))
                       galaxies
                       :length 2)))
