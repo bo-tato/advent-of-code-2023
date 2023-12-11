@@ -9,6 +9,7 @@
   (:import-from :array-operations/utilities
    :multf)
   (:import-from :metabang-bind
+   :lambda-bind
    :bind)
   (:import-from :named-readtables
    :in-readtable)
