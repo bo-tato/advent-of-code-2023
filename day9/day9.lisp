@@ -2,8 +2,7 @@
 
 (defun next-value (history-line part)
   (loop for nums = (string-to-num-list history-line)
-          then (loop for (x y) on nums while y
-                     collect (- y x))
+          then (rest (deltas nums))
         while (notevery #'zerop nums)
         for sign = 1 then (- sign)
         if (eq part :part1)
