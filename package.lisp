@@ -22,8 +22,7 @@
 (named-readtables:defreadtable
     :aoc-sugar
   (:merge
-   ;; some convenient reader macros for currying and composition
-   ;; see: https://eschulte.github.io/curry-compose-reader-macros
+   ;; λ(* 2 _) style lambda shorthand syntax
    :fn.reader
    ;; string interpolation and regex literals
    ;; see: http://edicl.github.io/cl-interpol/
