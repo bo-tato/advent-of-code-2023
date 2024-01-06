@@ -5,7 +5,7 @@
   (:import-from :uiop
    :read-file-lines)
   (:import-from :ppcre
-   :scan-to-strings :all-matches-as-strings)
+   :register-groups-bind :scan-to-strings :all-matches-as-strings)
   (:import-from :array-operations/utilities
    :multf)
   (:import-from :metabang-bind
