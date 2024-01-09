@@ -17,7 +17,11 @@
   (:import-from :trivia
    :if-match :match)
   (:import-from :function-cache
-   :clear-cache :defcached))
+   :clear-cache :defcached)
+  (:import-from :graph
+   :digraph)
+  (:import-from :sb-unicode
+   :digit-value))
 
 (named-readtables:defreadtable
     :aoc-sugar
