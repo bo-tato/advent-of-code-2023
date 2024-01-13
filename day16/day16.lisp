@@ -12,17 +12,9 @@
   (unless (swaphash (cons position direction) t visited)
     (when-let (tile (@ *grid* position))
       (setf (@ energized position) t)
-      (bind (((row . col) position)
-             ((:flet move (direction))
-              (visit
-               (case direction
-                 (:up (cons (1- row) col))
-                 (:down (cons (1+ row) col))
-                 (:left (cons row (1- col)))
-                 (:right (cons row (1+ col))))
-               direction
-               visited
-               energized)))
+      (flet ((move (direction)
+               (visit (neighbor position direction)
+                      direction visited energized)))
         (case tile
           (#\. (move direction))
           (#\/ (move (case direction

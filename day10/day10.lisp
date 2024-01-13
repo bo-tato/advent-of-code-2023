@@ -1,23 +1,20 @@
 (in-package :advent-of-code-2023)
 (in-readtable :aoc-sugar)
 
-;; kind of messy write-only code for this day but I'm too lazy to clean it up
-
 (defparameter *graph* (dict))
 (defparameter *rows* nil)
 (defparameter *cols* nil)
 (defparameter *start* nil)
 (defparameter *loop-graph* (dict))
 
-(defun neighbors (position)
-  (destructuring-bind (row . col) position
-    (case (@ *graph* position)
-      (#\| (list (cons (1- row) col) (cons (1+ row) col)))
-      (#\- (list (cons row (1- col)) (cons row (1+ col))))
-      (#\L (list (cons (1- row) col) (cons row (1+ col))))
-      (#\J (list (cons (1- row) col) (cons row (1- col))))
-      (#\7 (list (cons (1+ row) col) (cons row (1- col))))
-      (#\F (list (cons (1+ row) col) (cons row (1+ col)))))))
+(defun connected (position)
+  (case (@ *graph* position)
+    (#\| (list (row- position) (row+ position)))
+    (#\- (list (col- position) (col+ position)))
+    (#\L (list (row- position) (col+ position)))
+    (#\J (list (row- position) (col- position)))
+    (#\7 (list (row+ position) (col- position)))
+    (#\F (list (row+ position) (col+ position)))))
 
 (defun add-loop (position)
   (flet ((mark (row col) (setf (@ *loop-graph* (cons row col)) t)))
@@ -36,11 +33,6 @@
        (#\7 (mark (1+ row) col) (mark (+ 2 row) (1+ col)))
        (#\F (mark (+ 2 row) (1+ col)) (mark (1+ row) (+ 2 col)))))))
 
-(defun bordering (position)
-  (loop for (row . col) = position
-        for (row-delta col-delta) in '((-1 0) (1 0) (0 -1) (0 1))
-        collect (cons (+ row row-delta) (+ col col-delta))))
-
 (defun loop-bound (x)
   (+ 2 (* 3 x)))
 
@@ -52,11 +44,11 @@
   (unless (or (@ *loop-graph* position)
               (out-of-bounds position))
     (setf (@ *loop-graph* position) t)
-    (mapc #'flood-loop (bordering position))))
+    (mapc #'flood-loop (neighbors position))))
 
 (defun find-path (start end prev &optional (depth 1))
   (add-loop start)
-  (destructuring-bind (&optional neighbor1 neighbor2) (neighbors start)
+  (destructuring-bind (&optional neighbor1 neighbor2) (connected start)
     (cond ((equal start end) depth)
           ((equal prev neighbor1) (find-path neighbor2 end start (1+ depth)))
           ((equal prev neighbor2) (find-path neighbor1 end start (1+ depth))))))
@@ -72,8 +64,8 @@
                do (setf (@ *graph* (cons row col)) char)))
 
 (format t "part1: ~a~%"
-        (/ (find-path (find-if λ(find *start* (neighbors _) :test 'equal)
-                               (bordering *start*))
+        (/ (find-path (find-if λ(find *start* (connected _) :test 'equal)
+                               (neighbors *start*))
                       *start* *start*)
            2))
 
@@ -83,4 +75,4 @@
         (loop for row below *rows*
               sum (loop for col below *cols*
                         count (notany λ(@ *loop-graph* _)
-                                      (bordering (cons (1+ (* 3 row)) (1+ (* 3 col))))))))
+                                      (neighbors (cons (1+ (* 3 row)) (1+ (* 3 col))))))))

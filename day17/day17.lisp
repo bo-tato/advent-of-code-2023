@@ -1,6 +1,6 @@
 (in-package :advent-of-code-2023)
 
-(defparameter *part* :part2)
+(defparameter *part* :part1)
 (defparameter *min-length* (if (eq *part* :part1)
                                1
                                4))
@@ -8,9 +8,9 @@
                                3
                                10))
 
-(defstruct node row col direction line-length)
+(defstruct node position direction line-length)
 (defparameter *graph* (make-instance 'digraph))
-(defparameter *start* (make-node :row 0 :col 0 :direction :none :line-length 0))
+(defparameter *start* (make-node :position (cons 0 0) :direction :none :line-length 0))
 (defparameter *max-row* 0)
 (defparameter *max-col* 0)
 (defparameter *node-ids* (make-hash-table :test 'equalp))
@@ -45,23 +45,21 @@
       for row from 0
       do (loop for heat-loss across line
                for col from 0
+               for position = (cons row col)
                do (loop for line-length from 1 upto *max-length*
                         do (loop for direction in '(:up :down :left :right)
-                                 do (add-node (make-node :row row :col col
+                                 do (add-node (make-node :position position
                                                          :direction direction
                                                          :line-length line-length))
-                                    (setf (@ *heat-loss* (cons row col))
+                                    (setf (@ *heat-loss* position)
                                           (digit-value heat-loss))))
                   (maxf *max-col* col))
          (maxf *max-row* row))
 (add-node *start*)
 
 (dolist (start (all-nodes))
-  (with-slots (row col direction line-length) start
-    (loop for (dest edge-direction) in `(((,(1- row) . ,col) :up)
-                                         ((,(1+ row) . ,col) :down)
-                                         ((,row . ,(1- col)) :left)
-                                         ((,row . ,(1+ col)) :right))
+  (with-slots (position direction line-length) start
+    (loop for (dest . edge-direction) in (neighbors position :directions t)
           for new-line-length = (if (eq direction edge-direction)
                                     (1+ line-length)
                                     1)
@@ -73,7 +71,7 @@
                             (eq direction edge-direction)
                             (eq direction :none)
                             (>= line-length *min-length*)))
-               (add-edge start (make-node :row (car dest) :col (cdr dest)
+               (add-edge start (make-node :position dest
                                           :direction edge-direction
                                           :line-length new-line-length)
                          weight)))))
@@ -82,6 +80,6 @@
         (loop for direction in '(:right :down)
               minimize (loop for line-length from *min-length* to *max-length*
                              minimize (shortest-path *start* (make-node
-                                                              :row *max-row* :col *max-col*
+                                                              :position (cons *max-row* *max-col*)
                                                               :direction direction
                                                               :line-length line-length)))))
