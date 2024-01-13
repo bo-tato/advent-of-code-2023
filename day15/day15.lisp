@@ -25,7 +25,7 @@
 (loop with boxes = (make-array 256 :initial-element nil)
       for step in *steps*
       do (register-groups-bind (label operation lens) ("(\\w+)(-|=)(\\d+)?" step)
-           (symbol-macrolet ((box (aref boxes (hash label))))
+           (with-resolved-places ((box (aref boxes (hash label))))
              (match operation
                ("=" (if-let (old-lens (assoc label box :test 'string=))
                       (setf (cdr old-lens) lens)

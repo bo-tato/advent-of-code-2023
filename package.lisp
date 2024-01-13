@@ -21,7 +21,9 @@
   (:import-from :graph
    :digraph)
   (:import-from :sb-unicode
-   :digit-value))
+   :digit-value)
+  (:import-from :place-utils
+   :with-resolved-places))
 
 (named-readtables:defreadtable
     :aoc-sugar
