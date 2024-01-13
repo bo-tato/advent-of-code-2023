@@ -4,25 +4,25 @@
   "Return a list of all numbers in STRING."
   (mapcar #'parse-integer (ppcre:all-matches-as-strings "[-\\d]+" string)))
 
-(defun row+ (point)
-  "Add 1 to the row of POINT."
+(defun row+ (point &optional (distance 1))
+  "Add DISTANCE to the row of POINT."
   (destructuring-bind (row . col) point
-    (cons (1+ row) col)))
+    (cons (+ row distance) col)))
 
-(defun row- (point)
-  "Subtract 1 from the row of POINT."
+(defun row- (point &optional (distance 1))
+  "Subtract DISTANCE from the row of POINT."
   (destructuring-bind (row . col) point
-    (cons (1- row) col)))
+    (cons (- row distance) col)))
 
-(defun col+ (point)
-  "Add 1 to the col of POINT."
+(defun col+ (point &optional (distance 1))
+  "Add DISTANCE to the col of POINT."
   (destructuring-bind (row . col) point
-    (cons row (1+ col))))
+    (cons row (+ col distance))))
 
-(defun col- (point)
-  "Subtract 1 from the col of POINT."
+(defun col- (point &optional (distance 1))
+  "Subtract DISTANCE from the col of POINT."
   (destructuring-bind (row . col) point
-    (cons row (1- col))))
+    (cons row (- col distance))))
 
 (defun neighbors (point &key directions)
   "Returns a list of the four points adjacent to POINT."
@@ -34,10 +34,23 @@
         else
           collect neighbor))
 
-(defun neighbor (point direction)
-  "Return the neighbor of POINT in the given DIRECTION."
+(defun move (point direction &optional (distance 1))
+  "Return the the coordinates DISTANCE away from POINT in DIRECTION."
   (case direction
-    (:up (row- point))
-    (:down (row+ point))
-    (:left (col- point))
-    (:right (col+ point))))
+    (:up (row- point distance))
+    (:down (row+ point distance))
+    (:left (col- point distance))
+    (:right (col+ point distance))))
+
+(defun cross-product (point1 point2)
+  (bind (((x1 . y1) point1)
+         ((x2 . y2) point2))
+    (+ (* x1 y2) (- (* x2 y1)))))
+
+;; https://en.wikipedia.org/wiki/Shoelace_formula
+(defun shoelace (points)
+  "Compute the area of the polygon defined by POINTS."
+  (abs (/ (loop for prev = (lastcar points) then point
+                for point in points
+                sum (cross-product prev point))
+          2)))

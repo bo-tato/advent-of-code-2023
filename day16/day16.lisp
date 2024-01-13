@@ -13,7 +13,7 @@
     (when-let (tile (@ *grid* position))
       (setf (@ energized position) t)
       (flet ((move (direction)
-               (visit (neighbor position direction)
+               (visit (move position direction)
                       direction visited energized)))
         (case tile
           (#\. (move direction))
