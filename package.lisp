@@ -23,7 +23,7 @@
   (:import-from :sb-unicode
    :digit-value)
   (:import-from :place-utils
-   :with-resolved-places))
+   :oldf :with-resolved-places))
 
 (named-readtables:defreadtable
     :aoc-sugar
