@@ -26,7 +26,7 @@
   (hash-table-keys *node-ids*))
 
 (defun add-edge (start dest weight)
-  (graph:add-edge *graph* (list (add-node start) (add-node dest)) weight))
+  (graph:add-edge *graph* [(add-node start) (add-node dest)] weight))
 
 (defun shortest-path (start dest)
   (or (nth-value 1

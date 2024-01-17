@@ -9,12 +9,12 @@
 
 (defun connected (position)
   (case (@ *graph* position)
-    (#\| (list (row- position) (row+ position)))
-    (#\- (list (col- position) (col+ position)))
-    (#\L (list (row- position) (col+ position)))
-    (#\J (list (row- position) (col- position)))
-    (#\7 (list (row+ position) (col- position)))
-    (#\F (list (row+ position) (col+ position)))))
+    (#\| [(row- position) (row+ position)])
+    (#\- [(col- position) (col+ position)])
+    (#\L [(row- position) (col+ position)])
+    (#\J [(row- position) (col- position)])
+    (#\7 [(row+ position) (col- position)])
+    (#\F [(row+ position) (col+ position)])))
 
 (defun add-loop (position)
   (flet ((mark (row col) (setf (@ *loop-graph* (cons row col)) t)))

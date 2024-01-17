@@ -55,7 +55,7 @@
       (dolist (rule (butlast rules))
         (register-groups-bind (category operator num dest)
             ("([xmas])([<>])(\\d+):(\\w+)" rule)
-          (push (list category operator num dest) (@ *workflows* workflow))))
+          (push [category operator num dest] (@ *workflows* workflow))))
       (push (lastcar rules) (@ *workflows* workflow))
       (nreversef (@ *workflows* workflow))
 

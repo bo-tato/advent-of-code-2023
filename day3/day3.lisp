@@ -9,7 +9,7 @@
         thereis (when-let (col (position-if predicate (aref *grid* row)
                                             :start (max (1- col-start) 0)
                                             :end (min (1+ col-end) *cols*)))
-                  (list row col))))
+                  [row col])))
 
 (defun schematic-symbol-p (char)
   (and (not (digit-char-p char))
@@ -17,7 +17,7 @@
 
 (defun solve (part)
   (summing
-    (let ((stars (make-array (list *rows* *cols*) :initial-element nil)))
+    (let ((stars (make-array [*rows* *cols*] :initial-element nil)))
       (loop for row across *grid*
             for row-num from 0
             do (loop with after-position = 0 and number

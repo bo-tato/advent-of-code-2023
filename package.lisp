@@ -24,12 +24,3 @@
    :digit-value)
   (:import-from :place-utils
    :oldf :with-resolved-places))
-
-(named-readtables:defreadtable
-    :aoc-sugar
-  (:merge
-   ;; λ(* 2 _) style lambda shorthand syntax
-   :fn.reader
-   ;; string interpolation and regex literals
-   ;; see: http://edicl.github.io/cl-interpol/
-   :interpol-syntax))

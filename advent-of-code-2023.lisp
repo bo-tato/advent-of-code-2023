@@ -1,5 +1,26 @@
 (in-package :advent-of-code-2023)
 
+(defun list-reader-macro (stream char)
+  (declare (ignore char))
+  `(list ,@(read-delimited-list #\] stream t)))
+
+(defun dict-reader-macro (stream char)
+  (declare (ignore char))
+  `(serapeum:dict ,@(read-delimited-list #\} stream t)))
+
+(named-readtables:defreadtable
+    :aoc-sugar
+  (:merge
+   ;; λ(* 2 _) style lambda shorthand syntax
+   :fn.reader
+   ;; string interpolation and regex literals
+   ;; see: http://edicl.github.io/cl-interpol/
+   :interpol-syntax)
+  (:macro-char #\[ #'list-reader-macro)
+  (:macro-char #\] (get-macro-character #\)))
+  (:macro-char #\{ #'dict-reader-macro)
+  (:macro-char #\} (get-macro-character #\))))
+
 (defun string-to-num-list (string)
   "Return a list of all numbers in STRING."
   (mapcar #'parse-integer (ppcre:all-matches-as-strings "[-\\d]+" string)))
