@@ -75,3 +75,11 @@
                 for point in points
                 sum (cross-product prev point))
           2)))
+
+(defun repeat-until-stable (f x &key (test #'equal))
+  "Repeatedly call (f x), then (f (f x)), etc until the result doesn't change
+according to TEST."
+  (let ((next (funcall f x)))
+    (if (funcall test next x)
+        x
+        (repeat-until-stable f next :test test))))
