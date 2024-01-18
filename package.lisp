@@ -23,4 +23,6 @@
   (:import-from :sb-unicode
    :digit-value)
   (:import-from :place-utils
-   :oldf :with-resolved-places))
+   :oldf :with-resolved-places)
+  (:import-from :fset
+   :contains? :with :empty-set))
