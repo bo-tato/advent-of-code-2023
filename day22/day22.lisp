@@ -33,8 +33,9 @@
 
 (loop for brick in *bricks*
       for other-bricks = (remove brick *bricks*)
-      for fall-count = (length (set-difference (repeat-until-stable #'lower-bricks other-bricks)
-                                               other-bricks :test 'equal))
+      for fall-count = (loop for orig-position in other-bricks
+                             for new-position in (repeat-until-stable #'lower-bricks other-bricks)
+                             count (not (equal orig-position new-position)))
       count (zerop fall-count) into part1
       sum fall-count into part2
       finally (format t "part1: ~a, part2: ~a~%" part1 part2))
