@@ -3,6 +3,6 @@
 (asdf:defsystem #:advent-of-code-2023
   :depends-on (:serapeum :alexandria :cl-ppcre :str :array-operations :trivia
                :cl-interpol :metabang-bind :fn :series :function-cache :graph
-               :place-utils)
+               :place-utils :fset)
   :components ((:file "package")
                (:file "advent-of-code-2023")))

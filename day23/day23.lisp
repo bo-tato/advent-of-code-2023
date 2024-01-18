@@ -2,7 +2,7 @@
 (in-readtable :aoc-sugar)
 
 (defparameter *map* (dict))
-(defparameter *part1* 0)
+(defparameter *max-path* 0)
 
 (loop for line in (read-file-lines "input.txt")
       for row from 0
@@ -12,7 +12,7 @@
 
 (defun dfs (pos steps visited)
   (if (equal pos '(140 . 139))
-      (maxf *part1* steps)
+      (maxf *max-path* steps)
       (loop for neighbor in (case (@ *map* pos)
                               (#\< [(move pos :left)])
                               (#\> [(move pos :right)])
@@ -20,7 +20,15 @@
                               (#\v [(move pos :down)])
                               (#\. (neighbors pos)))
             when (and (find (@ *map* neighbor) ".<>^v")
-                      (not (member neighbor visited :test 'equal)))
-              do (dfs neighbor (1+ steps) (cons pos visited)))))
+                      (not (contains? visited neighbor)))
+              do (dfs neighbor (1+ steps) (with visited pos)))))
 
-(dfs '(0 . 1) 0 nil)
+(time (dfs '(0 . 1) 0 (empty-set)))
+(format t "part1: ~a~%" *max-path*)
+
+(do-hash-table (pos char *map*)
+  (when (find char "<>^v")
+    (setf (@ *map* pos) #\.)))
+
+(time (dfs '(0 . 1) 0 (empty-set)))
+(format t "part2: ~a~%" *max-path*)
