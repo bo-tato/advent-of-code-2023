@@ -19,7 +19,7 @@
   (:import-from :function-cache
    :clear-cache :defcached)
   (:import-from :graph
-   :add-edge :graph :digraph)
+   :digraph)
   (:import-from :sb-unicode
    :digit-value)
   (:import-from :place-utils
