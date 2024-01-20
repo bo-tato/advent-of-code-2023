@@ -66,7 +66,7 @@
 (defun cross-product (point1 point2)
   (bind (((x1 . y1) point1)
          ((x2 . y2) point2))
-    (+ (* x1 y2) (- (* x2 y1)))))
+    (- (* x1 y2) (* x2 y1))))
 
 ;; https://en.wikipedia.org/wiki/Shoelace_formula
 (defun shoelace (points)
